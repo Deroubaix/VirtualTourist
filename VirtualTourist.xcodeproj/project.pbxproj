@@ -14,6 +14,7 @@
 		C5F7531C2199C23200887006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5F7531B2199C23200887006 /* Assets.xcassets */; };
 		C5F7531F2199C23200887006 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5F7531D2199C23200887006 /* LaunchScreen.storyboard */; };
 		C5F753272199F66A00887006 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F753262199F66A00887006 /* CollectionViewController.swift */; };
+		C5F7532C219A3C1A00887006 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7532B219A3C1A00887006 /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		C5F7531E2199C23200887006 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C5F753202199C23200887006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5F753262199F66A00887006 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
+		C5F7532B219A3C1A00887006 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				C5F7531D2199C23200887006 /* LaunchScreen.storyboard */,
 				C5F753202199C23200887006 /* Info.plist */,
 				C5F753182199C23000887006 /* VirtualTourist.xcdatamodeld */,
+				C5F7532B219A3C1A00887006 /* DataController.swift */,
 			);
 			path = VirtualTourist;
 			sourceTree = "<group>";
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5F7532C219A3C1A00887006 /* DataController.swift in Sources */,
 				C5F753272199F66A00887006 /* CollectionViewController.swift in Sources */,
 				C5F753142199C23000887006 /* MapViewController.swift in Sources */,
 				C5F753122199C23000887006 /* AppDelegate.swift in Sources */,

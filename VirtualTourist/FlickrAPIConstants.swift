@@ -1,5 +1,5 @@
 //
-//  FlickrConstants.swift
+//  FlickrAPIConstants.swift
 //  VirtualTourist
 //
 //  Created by Marisha Deroubaix on 13/11/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct FlickrConstants {
+struct FlickrAPIConstants {
   
   struct Flickr {
     static let APIScheme = "https"

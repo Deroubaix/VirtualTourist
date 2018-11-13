@@ -15,7 +15,9 @@
 		C5F7531F2199C23200887006 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5F7531D2199C23200887006 /* LaunchScreen.storyboard */; };
 		C5F753272199F66A00887006 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F753262199F66A00887006 /* CollectionViewController.swift */; };
 		C5F7532C219A3C1A00887006 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7532B219A3C1A00887006 /* DataController.swift */; };
-		C5F7532E219B111600887006 /* FlickrConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7532D219B111500887006 /* FlickrConstants.swift */; };
+		C5F7532E219B111600887006 /* FlickrAPIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7532D219B111500887006 /* FlickrAPIConstants.swift */; };
+		C5F75330219B3AE300887006 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7532F219B3AE300887006 /* Photos.swift */; };
+		C5F75332219B3B1500887006 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F75331219B3B1500887006 /* Pin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +31,9 @@
 		C5F753202199C23200887006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5F753262199F66A00887006 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		C5F7532B219A3C1A00887006 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
-		C5F7532D219B111500887006 /* FlickrConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrConstants.swift; sourceTree = "<group>"; };
+		C5F7532D219B111500887006 /* FlickrAPIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrAPIConstants.swift; sourceTree = "<group>"; };
+		C5F7532F219B3AE300887006 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
+		C5F75331219B3B1500887006 /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +75,9 @@
 				C5F753202199C23200887006 /* Info.plist */,
 				C5F753182199C23000887006 /* VirtualTourist.xcdatamodeld */,
 				C5F7532B219A3C1A00887006 /* DataController.swift */,
-				C5F7532D219B111500887006 /* FlickrConstants.swift */,
+				C5F7532F219B3AE300887006 /* Photos.swift */,
+				C5F75331219B3B1500887006 /* Pin.swift */,
+				C5F7532D219B111500887006 /* FlickrAPIConstants.swift */,
 			);
 			path = VirtualTourist;
 			sourceTree = "<group>";
@@ -147,11 +153,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5F75330219B3AE300887006 /* Photos.swift in Sources */,
 				C5F7532C219A3C1A00887006 /* DataController.swift in Sources */,
 				C5F753272199F66A00887006 /* CollectionViewController.swift in Sources */,
+				C5F75332219B3B1500887006 /* Pin.swift in Sources */,
 				C5F753142199C23000887006 /* MapViewController.swift in Sources */,
 				C5F753122199C23000887006 /* AppDelegate.swift in Sources */,
-				C5F7532E219B111600887006 /* FlickrConstants.swift in Sources */,
+				C5F7532E219B111600887006 /* FlickrAPIConstants.swift in Sources */,
 				C5F7531A2199C23000887006 /* VirtualTourist.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

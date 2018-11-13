@@ -48,6 +48,7 @@ struct DataController {
       return nil
     }
     self.url = docURL.appendingPathComponent("model.sqlite")
+    
     let options = [NSInferMappingModelAutomaticallyOption: true, NSMigratePersistentStoresAutomaticallyOption: true]
     
     do {
@@ -60,6 +61,13 @@ struct DataController {
   
   func addStoreCoordinator(_ storeType: String, configuration: String?, storeURL: URL, options: [AnyHashable: Any]?) throws {
     try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+  }
+  
+  func dropAllData() throws {
+    
+    try persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: NSSQLiteStoreType, options: nil)
+    
+    try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: url, options: nil)
   }
   
   typealias Batch = (_ workerContext: NSManagedObjectContext) -> ()
@@ -75,6 +83,8 @@ struct DataController {
       }
     }
   }
+  
+  // MARK: - Core Data Saving
   
   func save() {
     context.performAndWait {

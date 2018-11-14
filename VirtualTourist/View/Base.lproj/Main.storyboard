@@ -45,9 +45,23 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Xq1-DC-Z7g">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="48w-wE-tF4"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Xjy-gs-YJd"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="48w-wE-tF4">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="jNM-l2-DY3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Xjy-gs-YJd">
+                            <connections>
+                                <action selector="doneEditingPressed:" destination="BYZ-38-t0r" id="7ho-1q-o08"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="deleteTextLabel" destination="XIz-KM-Ard" id="fen-Ob-Lh1"/>
+                        <outlet property="doneButton" destination="Xjy-gs-YJd" id="e9d-Jo-Jax"/>
+                        <outlet property="editButton" destination="48w-wE-tF4" id="qkB-W2-esw"/>
+                        <outlet property="mapView" destination="TdX-zW-yJy" id="Ga5-Rg-qPg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

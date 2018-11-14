@@ -30,6 +30,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate  {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     doneButton.isEnabled = false
     deleteTextLabel.isHidden = true
     
@@ -63,6 +64,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate  {
   func manageObjects() {
     fetchRequest.sortDescriptors = sortDescriptors
     fetchPinResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: (appDelegate.stack?.context)!, sectionNameKeyPath: nil, cacheName: nil)
+    performFetch()
     
     for i in (fetchPinResultsController.fetchedObjects)! {
       
@@ -78,6 +80,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate  {
     }
   }
   
+  func performFetch() {
+    do {
+      try fetchPinResultsController.performFetch()
+    } catch {
+      print("Error while trying to peform a search")
+    }
+  }
 
   
   @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
@@ -133,6 +142,7 @@ extension MapViewController: MKMapViewDelegate {
     let predicateTwo = NSPredicate(format: "longitude = %@", argumentArray: [(view.annotation?.coordinate.longitude)!])
     let predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [predicateOne, predicateTwo])
     fetchRequest.predicate = predicate
+    performFetch()
     
     let pinResults = fetchPinResultsController.fetchedObjects
     let selectedPin = pinResults![0]
@@ -146,6 +156,7 @@ extension MapViewController: MKMapViewDelegate {
           annotations.remove(at: index)
           fetchPinResultsController.managedObjectContext.delete(selectedPin)
           appDelegate.stack?.save()
+          generateMap()
           return
         }
         index += 1

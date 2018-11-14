@@ -32,7 +32,53 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate  {
     super.viewDidLoad()
     doneButton.isEnabled = false
     deleteTextLabel.isHidden = true
+    
+    let tapGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MapViewController.viewTapped(_:)))
+    tapGestureRecognizer.minimumPressDuration = 1.0
+    tapGestureRecognizer.allowableMovement = 1
+    mapView.addGestureRecognizer(tapGestureRecognizer)
+    manageObjects()
   }
+  
+  func generateMap() {
+    mapView.addAnnotation(annotations as! MKAnnotation)
+  }
+  
+  @objc func viewTapped(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    if gestureRecognizer.state == UIGestureRecognizer.State.began {
+      if !deletedAllowed {
+        let location = gestureRecognizer.location(in: mapView)
+        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotations.append(annotation)
+        generateMap()
+        
+        _ = Pin(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude, context: self.fetchPinResultsController.managedObjectContext)
+        appDelegate.stack?.save()
+      }
+    }
+  }
+  
+  func manageObjects() {
+    fetchRequest.sortDescriptors = sortDescriptors
+    fetchPinResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: (appDelegate.stack?.context)!, sectionNameKeyPath: nil, cacheName: nil)
+    
+    for i in (fetchPinResultsController.fetchedObjects)! {
+      
+      let managed = i as NSManagedObject
+      let managed2 = managed as? Pin
+      let latitude = CLLocationDegrees(truncating: (managed2?.latitude)!)
+      let longitude = CLLocationDegrees(truncating: (managed2?.longitude)!)
+      let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+      let annotation = MKPointAnnotation()
+      annotation.coordinate = coordinate
+      annotations.append(annotation)
+      generateMap()
+    }
+  }
+  
+
   
   @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
     

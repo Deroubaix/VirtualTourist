@@ -38,12 +38,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate  {
     tapGestureRecognizer.minimumPressDuration = 1.0
     tapGestureRecognizer.allowableMovement = 1
     mapView.addGestureRecognizer(tapGestureRecognizer)
+    UIView.setAnimationDuration(0.5)
+    UIView.setAnimationDelegate(self)
+    UIView.setAnimationBeginsFromCurrentState(true)
     manageObjects()
   }
   
-  func generateMap() {
-    mapView.addAnnotation(annotations as! MKAnnotation)
-  }
+  
   
   @objc func viewTapped(_ gestureRecognizer: UILongPressGestureRecognizer) {
     if gestureRecognizer.state == UIGestureRecognizer.State.began {
@@ -78,6 +79,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate  {
       annotations.append(annotation)
       generateMap()
     }
+  }
+  
+  func generateMap() {
+    mapView.addAnnotation(annotations as! MKAnnotation)
   }
   
   func performFetch() {

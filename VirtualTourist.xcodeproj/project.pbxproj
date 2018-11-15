@@ -19,6 +19,7 @@
 		C5F75330219B3AE300887006 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7532F219B3AE300887006 /* Photos.swift */; };
 		C5F75332219B3B1500887006 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F75331219B3B1500887006 /* Pin.swift */; };
 		C5F75334219B415A00887006 /* FlickrAPIDownloadPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F75333219B415A00887006 /* FlickrAPIDownloadPhotos.swift */; };
+		C5F7533D219DADA400887006 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F7533C219DADA400887006 /* Cell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		C5F7532F219B3AE300887006 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		C5F75331219B3B1500887006 /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		C5F75333219B415A00887006 /* FlickrAPIDownloadPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrAPIDownloadPhotos.swift; sourceTree = "<group>"; };
+		C5F7533C219DADA400887006 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				C5F753152199C23000887006 /* Main.storyboard */,
+				C5F7533C219DADA400887006 /* Cell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				C5F753142199C23000887006 /* MapViewController.swift in Sources */,
 				C5F753122199C23000887006 /* AppDelegate.swift in Sources */,
 				C5F7532E219B111600887006 /* FlickrAPIConstants.swift in Sources */,
+				C5F7533D219DADA400887006 /* Cell.swift in Sources */,
 				C5F7531A2199C23000887006 /* VirtualTourist.xcdatamodeld in Sources */,
 				C5F75334219B415A00887006 /* FlickrAPIDownloadPhotos.swift in Sources */,
 			);

@@ -2,88 +2,178 @@
 //  CollectionViewController.swift
 //  VirtualTourist
 //
-//  Created by Marisha Deroubaix on 12/11/18.
+//  Created by Marisha Deroubaix on 15/11/18.
 //  Copyright © 2018 Marisha Deroubaix. All rights reserved.
 //
 
 import UIKit
+import CoreData
+import MapKit
 
-private let reuseIdentifier = "Cell"
-
-class CollectionViewController: UICollectionViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+class CollectionViewController: UIViewController {
+  
+  @IBOutlet weak var mapView: MKMapView!
+  @IBOutlet weak var collectionView: UICollectionView!
+  @IBOutlet weak var newCollectionButton: UIBarButtonItem!
+  @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+  
+  var pin: Pin!
+  var photos = [Photos]()
+  var photosToDelete = [Photos]()
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    getPhotos()
+    setupMapView()
+    setFlowLayout()
+  }
+  
+  
+  @IBAction func newCollectionPressed(_ sender: UIBarButtonItem) {
     
-        // Configure the cell
+    if photosToDelete.count == 0 {
+      for photo in photos {
+        DataController.shared.context.delete(photo)
+      }
+      DataController.shared.save()
+      photos = [Photos]()
+      collectionView.reloadData()
+      getPhotos()
+    } else {
+      for photo in photosToDelete {
+        DataController.shared.context.delete(photo)
+        photos.remove(at: photos.index(of: photo)!)
+      }
+      photosToDelete = [Photos]()
+      DataController.shared.save()
+      collectionView.reloadData()
+    }
+    updateToolBar()
+  }
+  
+  func getPhotos() {
     
-        return cell
+    if let fetchResults = fetchPhotos() {
+      photos = fetchResults
+    } else {
+      FlickrAPIDownloadPhotos.shared.getPhotos(with: pin.latitude, longitude: pin.longitude) { (photoURL, error) in
+        if let photoURL = photoURL {
+          for url in photoURL {
+            let photo = Photos(context: DataController.shared.context)
+            photo.imageURL = url
+            photo.pin = self.pin
+            self.photos.append(photo)
+          }
+          DataController.shared.save()
+          DispatchQueue.main.async {
+            self.collectionView.reloadData()
+          }
+        }
+      }
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+  }
+  
+  func fetchPhotos() -> [Photos]? {
     
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photos")
+    let predicate = NSPredicate(format: "pin == %@", argumentArray: [pin])
+    fetchRequest.predicate = predicate
+    
+    do {
+      if let result = try DataController.shared.context.fetch(fetchRequest) as? [Photos] {
+        return result.count > 0 ? result : nil
+      }
+    } catch {
+      print("Error getting data")
     }
-    */
+    return nil
+  }
+  
+  func setupMapView() {
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = CLLocationCoordinate2DMake(CLLocationDegrees(pin.latitude), CLLocationDegrees(pin.longitude))
+    mapView.addAnnotation(annotation)
+    let coordinateRegion = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+    mapView.setRegion(coordinateRegion, animated: true)
+  }
+  
+  func updateToolBar() {
+    newCollectionButton.title = photosToDelete.count > 0 ? "Delete photos" : "New Collection"
+    newCollectionButton.tintColor = photosToDelete.count > 0 ? .red : view.tintColor
+  }
+  
+  func setFlowLayout() {
+    collectionView.allowsMultipleSelection = true
+    
+    let space: CGFloat = 3.0
+    let dimension = (view.frame.size.width - (2 * space)) / 3.0
+    flowLayout.minimumInteritemSpacing = space
+    flowLayout.minimumLineSpacing = space
+    flowLayout.itemSize = CGSize(width: dimension, height: dimension)
+  }
+  
+}
 
+extension CollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+  
+  
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return photos.count
+  }
+  
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Image", for: indexPath) as! Cell
+    let photo = photos[indexPath.row]
+    cell.activityIndicator.isHidden = false
+    cell.collectionImage.image = nil
+    cell.contentView.alpha = photosToDelete.contains(photo) ? 0.4 : 1.0
+    
+    if let imageData = photo.image {
+      let image = UIImage(data: imageData as Data)
+      cell.collectionImage.image = image
+      cell.activityIndicator.isHidden = true
+    } else {
+      cell.activityIndicator.startAnimating()
+      FlickrAPIDownloadPhotos.shared.downloadImage(with: photo.imageURL!) { (data, error) in
+        if error == nil {
+          let downloadedImage = UIImage(data: data!)
+          photo.image = data
+          
+          DispatchQueue.main.async {
+            cell.collectionImage.image = downloadedImage
+            cell.activityIndicator.stopAnimating()
+            cell.activityIndicator.isHidden = true
+          }
+        }
+      }
+    }
+    return cell
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    
+    let cell = collectionView.cellForItem(at: indexPath)
+    cell?.contentView.alpha = 0.4
+    
+    let photo = photos[indexPath.row]
+    if !photosToDelete.contains(photo) {
+      photosToDelete.append(photo)
+    }
+    updateToolBar()
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    
+    let cell = collectionView.cellForItem(at: indexPath)
+    let photo = photos[indexPath.row]
+    
+    if photosToDelete.contains(photo) {
+      cell?.contentView.alpha = 1.0
+      photosToDelete.remove(at: photosToDelete.index(of: photo)!)
+    }
+    updateToolBar()
+  }
+  
 }

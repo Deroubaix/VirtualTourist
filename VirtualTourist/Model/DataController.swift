@@ -14,10 +14,12 @@ struct DataController {
   let objectModel: NSManagedObjectModel
   let persistentStoreCoordinator: NSPersistentStoreCoordinator
   let modelURL: URL
-  let url: URL
+  let dbURL: URL
   let objectContext: NSManagedObjectContext
   let backgroundContext: NSManagedObjectContext
   let context: NSManagedObjectContext
+  
+  static let shared = DataController(modelName: "VirtualTourist")!
   
   init?(modelName: String) {
     guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd") else {
@@ -47,27 +49,27 @@ struct DataController {
       print("Unable to reach the documents folder")
       return nil
     }
-    self.url = docURL.appendingPathComponent("model.sqlite")
+    self.dbURL = docURL.appendingPathComponent("model.sqlite")
     
     let options = [NSInferMappingModelAutomaticallyOption: true, NSMigratePersistentStoresAutomaticallyOption: true]
     
     do {
-      try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: url, options: options)
+      try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: dbURL, options: options as [NSObject: AnyObject]?)
       print("Store successfully moved")
     } catch {
-      print("Unable to add store at \(url)")
+      print("Unable to add store at \(dbURL)")
     }
   }
   
   func addStoreCoordinator(_ storeType: String, configuration: String?, storeURL: URL, options: [AnyHashable: Any]?) throws {
-    try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+    try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: dbURL, options: nil)
   }
   
   func dropAllData() throws {
     
-    try persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: NSSQLiteStoreType, options: nil)
+    try persistentStoreCoordinator.destroyPersistentStore(at: dbURL, ofType: NSSQLiteStoreType, options: nil)
     
-    try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: url, options: nil)
+    try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: dbURL, options: nil)
   }
   
   typealias Batch = (_ workerContext: NSManagedObjectContext) -> ()
@@ -92,13 +94,13 @@ struct DataController {
         do {
           try self.context.save()
         } catch {
-          fatalError("Error while saving main context: \(error.localizedDescription)")
+          fatalError("Error while saving main context: \(error)")
         }
         self.objectContext.perform {
           do {
             try self.objectContext.save()
           } catch {
-            fatalError("Error saving context: \(error.localizedDescription)")
+            fatalError("Error saving context: \(error)")
           }
         }
       }

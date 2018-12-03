@@ -143,7 +143,7 @@ extension CollectionViewController: UICollectionViewDataSource, UICollectionView
           
           DispatchQueue.main.async {
             cell.collectionImage.image = downloadedImage
-            cell.activityIndicator.stopAnimating()
+//            cell.activityIndicator.stopAnimating()
             cell.activityIndicator.isHidden = true
           }
         }

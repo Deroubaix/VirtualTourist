@@ -22,6 +22,12 @@ class MapViewController: UIViewController, NSFetchedResultsControllerDelegate  {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    callFetchRequest()
+    
+  }
+  
+  func callFetchRequest() {
+    
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
     
     do {
@@ -66,6 +72,7 @@ class MapViewController: UIViewController, NSFetchedResultsControllerDelegate  {
     }
   }
 }
+
 
 extension MapViewController: MKMapViewDelegate {
   
